@@ -102,3 +102,16 @@ Pilih mekanisme delegasi sesuai kompleksitas tugas:
      - `Files`: daftar file yang diubah.
      - `Changes`: ringkasan perubahan inti.
      - `Checks/Blockers`: hasil verifikasi atau kendala.
+
+---
+
+## 5. Eksekusi Otonom (Alternatif `/goal`)
+
+1. **Lead Milestone & Verification Gate**:
+   - Lead melacak checklist milestone dan terus men-dispatch `Architect` -> `Builder` -> `Guardian` via reactive wakeup hingga seluruh item lolos QA sebelum melaporkan penyelesaian akhir ke user.
+2. **`run_workflow` (Orkestrasi Python)**:
+   - Untuk tugas multi-tahap atau multi-file besar, Lead dapat menjalankan `run_workflow` (`parallel`, `pipeline`, `phase`) di background hingga semua tahap selesai.
+3. **`swarm` + `schedule` / Monitor**:
+   - Untuk build paralel berdurasi panjang, kombinasikan `swarm` dengan `schedule` atau `swarm_monitor` guna mencegah stall.
+4. **Host-level `/goal`**:
+   - Sarankan perintah `/goal` ke user jika dibutuhkan forced loop host-level (mis. eksekusi semalaman).
