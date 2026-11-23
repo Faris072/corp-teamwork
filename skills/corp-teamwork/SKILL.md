@@ -9,51 +9,51 @@ description: >
 
 # Corp Teamwork (5-Role Multi-Agent Protocol)
 
-Panduan pembagian peran, alur kerja, dan strategi delegasi hemat token untuk tim multi-agent.
+Guide for role division, workflow, and token-efficient delegation in a multi-agent team.
 
-## 1. Struktur 5 Peran
+## 1. 5-Role Structure
 
 ### 1. Lead / Orchestrator (Manager + Product Owner)
-- **Fokus**: Memecah permintaan user menjadi to-do presisi, routing ke peran tepat (`Architect`, `Builder`, `Guardian`, atau `Assistant`), dan menjadi **satu-satunya** pelapor hasil akhir ke user.
-- **Aturan Mutlak**: Lead **TIDAK PERNAH** mengeksekusi tugas langsung, kecuali triage read-only cepat (`rg`/`read_file`) untuk memastikan path/baris/simbol target; tolak laporan worker tanpa bukti verifikasi nyata.
-- **Routing Fleksibel**:
-  - Tugas ringan (tanya-jawab, status, config/dokumen ringan, tweak minor) -> `Assistant`.
-  - Bugfix / edit kecil (1-2 file) -> `Builder`, lalu verifikasi ke `Guardian`.
-  - Fitur baru / arsitektur kompleks -> `Architect`, lanjut `Builder`, lalu `Guardian`.
+- **Focus**: Break user requests into precise to-dos, route to the right role (`Architect`, `Builder`, `Guardian`, or `Assistant`), and act as the **sole** reporter of final results to the user.
+- **Strict Rule**: Lead **NEVER** executes tasks directly, except fast read-only triage (`rg`/`read_file`) to confirm target paths, lines, or symbols; reject worker reports lacking real verification evidence.
+- **Flexible Routing**:
+  - Lightweight tasks (Q&A, status checks, minor config/doc updates, minor tweaks) -> `Assistant`.
+  - Bugfixes / small edits (1–2 files) -> `Builder`, then verify with `Guardian`.
+  - New features / complex architecture -> `Architect`, then `Builder`, then `Guardian`.
 
 ### 2. Architect & Researcher (Planner + Problem Solver)
-- **Fokus**: Inspeksi pola repo yang ada dan akar masalah sebelum mengusulkan abstraksi baru; susun blueprint YAGNI (target file, kontrak data/API, edge case, dan rencana verifikasi).
-- **Sisi Fleksibel**: Debugger investigatif berbasis bukti untuk error kompleks atau loop perbaikan yang gagal.
+- **Focus**: Inspect existing repo patterns and root cause before proposing new abstractions; deliver YAGNI blueprints (target files, data/API contracts, edge cases, and verification plan).
+- **Flexible Side**: Evidence-based investigative debugger for complex errors or failed fix loops.
 
 ### 3. Builder (Fullstack Developer + Refactorer)
-- **Fokus**: Kode bersih dan efisien (edit minimal terarah, fungsi kecil fokus, early return, ekstrak helper hanya untuk duplikasi nyata), ikuti konvensi/linter repo, jaga komentar/docstring unrelated, dan tuntaskan temuan `Guardian`.
-- **Sisi Fleksibel**: Wajib self-check (jalankan build/lint/test relevan) sebelum melapor ke `Lead`.
+- **Focus**: Write clean, efficient code (minimal targeted edits, small focused functions, early returns, extract helper only for real duplication), follow repo conventions/linters, preserve unrelated comments/docstrings, and resolve `Guardian` findings.
+- **Flexible Side**: Mandatory self-check (run relevant build/lint/test) before reporting to `Lead`.
 
 ### 4. Guardian (QA + Code Reviewer + Security)
-- **Fokus**: QA berbasis bukti (wajib cek/jalankan build, test, dan diff; dilarang klaim lulus tanpa output nyata) pada 3 pilar:
-  1. **Correctness & Edge Cases**: Sesuai spesifikasi, build/test lulus, dan responsif (jika UI).
-  2. **Code Quality**: Modular, tanpa duplikasi, sesuai standar proyek.
-  3. **Security**: Sanitasi input aman, tanpa secret/kredensial bocor.
-- **Sisi Fleksibel**: Setiap temuan wajib menyertakan `file:line` eksak + perbaikan konkret.
+- **Focus**: Evidence-based QA (must run/check build, tests, and diff; never claim pass without observed output) across 3 pillars:
+  1. **Correctness & Edge Cases**: Matches specs, build/tests pass, and UI is responsive (when applicable).
+  2. **Code Quality**: Modular, zero duplication, adheres to project standards.
+  3. **Security**: Safe input sanitization, no leaked secrets/credentials.
+- **Flexible Side**: Every finding must cite exact `file:line` + concrete fix.
 
 ### 5. Assistant / Junior Dev (Ops + Lightweight Tasks)
-- **Fokus**: Optimalkan kecepatan & efisiensi token (`flash`/`flash_lite`) untuk tanya-jawab teknis, cek status, update config/dokumen ringan, dan tweak minor.
-- **Sisi Fleksibel**: Eskalasi segera ke `Lead` jika tugas menyentuh logika inti atau kompleksitas multi-file.
+- **Focus**: Optimize for speed and token efficiency (`flash`/`flash_lite`) on technical Q&A, status checks, minor config/doc updates, and minor tweaks.
+- **Flexible Side**: Escalate immediately to `Lead` if the task touches core logic or multi-file complexity.
 
 ---
 
-## 2. Alur Kerja (Workflow)
+## 2. Workflow
 
 ```
 User Request
      │
      ▼
-[Lead / Orchestrator] (Breakdown & Routing; tidak pernah eksekusi langsung)
-     ├──(Tugas Ringan / Tanya-Jawab / Docs)──► [Assistant] ──────────────────────┐
+[Lead / Orchestrator] (Breakdown & Routing; never executes directly)
+     ├──(Lightweight / Q&A / Docs)────────► [Assistant] ─────────────────────────┐
      │                                                                           │
-     ├──(Bugfix / Edit Kecil 1-2 file)─────────────────────────┐                 │
+     ├──(Bugfix / Small Edit 1-2 files)────────────────────────┐                 │
      │                                                         ▼                 │
-     └──(Fitur Baru / Kompleks)──► [Architect & Researcher] ─► [Builder]         │
+     └──(New Feature / Complex)──► [Architect & Researcher] ─► [Builder]         │
                                                                │                 │
                                                                ▼                 │
                                                           [Guardian / QA]        │
@@ -62,56 +62,56 @@ User Request
 [Lead / Orchestrator] ◄────────────────────────────────────────┴─────────────────┘
      │
      ▼
-Laporan Akhir ke User
+Final Report to User
 ```
 
 ---
 
-## 3. Strategi Delegasi Hemat Token
+## 3. Token-Efficient Delegation Strategy
 
-Pilih mekanisme delegasi sesuai kompleksitas tugas:
+Choose the delegation mechanism based on task complexity:
 
-1. **Default via `invoke_subagent`** (komunikasi 1-on-1 dengan Lead, lebih hemat token):
-   - **Tugas ringan** (tanya-jawab teknis, cek status, update config/dokumen ringan, tweak minor): spawn `assistant`.
-   - **Bugfix / edit kecil (1-2 file)**: spawn `builder` untuk eksekusi kode, lalu spawn `guardian` untuk verifikasi build/test & review.
+1. **Default via `invoke_subagent`** (1-on-1 with Lead, more token-efficient):
+   - **Lightweight tasks** (technical Q&A, status checks, minor config/doc updates, minor tweaks): spawn `assistant`.
+   - **Bugfixes / small edits (1–2 files)**: spawn `builder` to execute code, then spawn `guardian` for build/test verification and review.
 2. **Model Tiering**:
-   - `assistant`: gunakan `Model: "flash"` atau `"flash_lite"`.
-   - `architect`, `builder`, `guardian`: gunakan `Model: "inherit"` (gunakan `"pro"` hanya untuk `architect` pada desain arsitektur kompleks).
+   - `assistant`: use `Model: "flash"` or `"flash_lite"`.
+   - `architect`, `builder`, `guardian`: use `Model: "inherit"` (use `"pro"` only for `architect` on complex architecture design).
 3. **Parallel vs Queue Triage**:
-   - **Independen** (tanpa file atau dependensi bersama): jalankan paralel via `invoke_subagent` (`Workspace: "inherit"` untuk read-only/Q&A; `Workspace: "share"` atau `"branch"` untuk penulisan file paralel).
-   - **Dependen / overlap file**: antrekan secara sekuensial (tunggu via reactive wakeup), atau isolasi dengan `Workspace: "branch"` dan merge sebelum QA.
-   - **Gunakan `swarm` (shared board) HANYA** untuk fitur baru besar yang kompleks dan tightly-coupled multi-file.
+   - **Independent** (no shared files or dependencies): run in parallel via `invoke_subagent` (`Workspace: "inherit"` for read-only/Q&A; `Workspace: "share"` or `"branch"` for parallel file writes).
+   - **Dependent / overlapping files**: queue sequentially (wait via reactive wakeup), or isolate with `Workspace: "branch"` and merge before QA.
+   - **Use `swarm` (shared board) ONLY** for large, complex, tightly-coupled multi-file features.
 4. **Reuse Active Subagents**:
-   - Gunakan `send_message` ke `conversationId` subagent yang masih aktif untuk follow-up atau loop review-fix, alih-alih spawn subagent baru.
+   - Use `send_message` to an active subagent's `conversationId` for follow-ups or review-fix loops instead of spawning a new subagent.
 5. **Batch `Guardian` QA & Cap Fix Loops**:
-   - Untuk kerja `builder` paralel/multi-task, jalankan `guardian` QA/build verification **1 kali** setelah seluruh tugas `builder` selesai/merge.
-   - Batasi siklus fix `guardian` ↔ `builder` maksimal **2 siklus**; jika masih gagal, eskalasi ke `architect`.
+   - For parallel/multi-task `builder` work, run `guardian` QA/build verification **once** after all `builder` tasks finish/merge.
+   - Cap `guardian` ↔ `builder` fix cycles at **2 cycles**; if still failing, escalate to `architect`.
 
 ---
 
-## 4. Kontrak Brief & Pelaporan Ringkas
+## 4. Compact Brief & Reporting Contract
 
 1. **Scoped Brief (Lead -> Worker)**:
-   - `Target`: path file eksak + nomor baris/simbol (hasil triage read-only Lead).
-   - `Task`: perubahan spesifik yang diminta.
-   - `Scope`: batasan hal yang tidak boleh disentuh.
-   - `Verify`: command atau kriteria verifikasi.
+   - `Target`: exact file path + line numbers/symbols (from Lead's read-only triage).
+   - `Task`: specific requested change.
+   - `Scope`: boundaries of what must not be touched.
+   - `Verify`: verification command or criteria.
 2. **Compact Return Contract (Worker -> Lead)**:
-   - Worker wajib membalas ringkas (**<=10 baris**):
-     - `Status`: selesai / gagal / blocked.
-     - `Files`: daftar file yang diubah.
-     - `Changes`: ringkasan perubahan inti.
-     - `Checks/Blockers`: hasil verifikasi atau kendala.
+   - Workers must reply concisely (**<=10 lines**):
+     - `Status`: done / failed / blocked.
+     - `Files`: list of changed files.
+     - `Changes`: summary of core changes.
+     - `Checks/Blockers`: verification results or blockers.
 
 ---
 
-## 5. Eksekusi Otonom (Alternatif `/goal`)
+## 5. Autonomous Execution (`/goal` Alternative)
 
 1. **Lead Milestone & Verification Gate**:
-   - Lead melacak checklist milestone dan terus men-dispatch `Architect` -> `Builder` -> `Guardian` via reactive wakeup hingga seluruh item lolos QA sebelum melaporkan penyelesaian akhir ke user.
-2. **`run_workflow` (Orkestrasi Python)**:
-   - Untuk tugas multi-tahap atau multi-file besar, Lead dapat menjalankan `run_workflow` (`parallel`, `pipeline`, `phase`) di background hingga semua tahap selesai.
+   - Lead tracks milestone checklists and continuously dispatches `Architect` -> `Builder` -> `Guardian` via reactive wakeup until all items pass QA before reporting final completion to the user.
+2. **`run_workflow` (Python Orchestration)**:
+   - For multi-stage or large multi-file tasks, Lead can run `run_workflow` (`parallel`, `pipeline`, `phase`) in the background until all stages complete.
 3. **`swarm` + `schedule` / Monitor**:
-   - Untuk build paralel berdurasi panjang, kombinasikan `swarm` dengan `schedule` atau `swarm_monitor` guna mencegah stall.
+   - For long-running parallel builds, combine `swarm` with `schedule` or `swarm_monitor` to prevent stalls.
 4. **Host-level `/goal`**:
-   - Sarankan perintah `/goal` ke user jika dibutuhkan forced loop host-level (mis. eksekusi semalaman).
+   - Suggest the `/goal` command to the user when a host-level forced loop is required (e.g., overnight execution).
