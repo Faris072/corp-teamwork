@@ -1,6 +1,6 @@
 # corp-teamwork
 
-A token-efficient 5-role multi-agent teamwork protocol plugin for Antigravity (`agy`).
+An open-source (MIT), token-efficient 5-role multi-agent teamwork protocol plugin for Antigravity (`agy`).
 
 ## Roles
 
@@ -17,6 +17,8 @@ git clone https://github.com/<your-org>/corp-teamwork.git
 agy plugin install ./corp-teamwork
 agy plugin enable corp-teamwork
 ```
+
+> Note: `<your-org>` is an intentional placeholder for forks/self-hosted clones (replace with `Faris072` for upstream).
 
 ## License
 

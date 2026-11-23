@@ -2,5 +2,7 @@
   "name": "corp-teamwork",
   "description": "5-role multi-agent teamwork protocol (Lead, Architect, Builder, Guardian, Assistant) with token-efficient delegation",
   "version": "1.0.0",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": "https://github.com/Faris072/corp-teamwork",
+  "keywords": ["opensource", "multi-agent", "teamwork", "antigravity"]
 }

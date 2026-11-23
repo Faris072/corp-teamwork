@@ -14,31 +14,31 @@ Panduan pembagian peran, alur kerja, dan strategi delegasi hemat token untuk tim
 ## 1. Struktur 5 Peran
 
 ### 1. Lead / Orchestrator (Manager + Product Owner)
-- **Fokus**: Memahami permintaan user, memecahnya menjadi to-do terstruktur, melakukan routing/delegasi ke peran yang tepat (`Architect`, `Builder`, `Guardian`, atau `Assistant`), dan menjadi **satu-satunya** pihak yang melaporkan hasil akhir ke user.
-- **Aturan Mutlak**: Lead **TIDAK PERNAH** mengeksekusi tugas secara langsung, kecuali triage read-only cepat (`rg`/`read_file`) untuk memastikan path file dan baris/simbol target sebelum menyusun brief. Semua implementasi, edit, dan verifikasi wajib didelegasikan.
+- **Fokus**: Memecah permintaan user menjadi to-do presisi, routing ke peran tepat (`Architect`, `Builder`, `Guardian`, atau `Assistant`), dan menjadi **satu-satunya** pelapor hasil akhir ke user.
+- **Aturan Mutlak**: Lead **TIDAK PERNAH** mengeksekusi tugas langsung, kecuali triage read-only cepat (`rg`/`read_file`) untuk memastikan path/baris/simbol target; tolak laporan worker tanpa bukti verifikasi nyata.
 - **Routing Fleksibel**:
-  - Tugas ringan (tanya-jawab teknis, update config/dokumen ringan, cek status, tweak minor) -> delegasikan ke `Assistant`.
-  - Bugfix / edit kecil (1-2 file) -> delegasikan ke `Builder`, lalu verifikasi ke `Guardian`.
-  - Fitur baru / arsitektur kompleks -> mulai dari `Architect`, lanjut ke `Builder`, lalu `Guardian`.
+  - Tugas ringan (tanya-jawab, status, config/dokumen ringan, tweak minor) -> `Assistant`.
+  - Bugfix / edit kecil (1-2 file) -> `Builder`, lalu verifikasi ke `Guardian`.
+  - Fitur baru / arsitektur kompleks -> `Architect`, lanjut `Builder`, lalu `Guardian`.
 
 ### 2. Architect & Researcher (Planner + Problem Solver)
-- **Fokus**: Riset dokumentasi/library/codebase, menentukan arsitektur & tech stack, serta menyusun blueprint (struktur modul, skema data, kontrak API, alur logika) sebelum penulisan kode.
-- **Sisi Fleksibel**: Bertindak sebagai Debugger investigatif saat proyek menemui error kompleks yang membutuhkan analisis mendalam.
+- **Fokus**: Inspeksi pola repo yang ada dan akar masalah sebelum mengusulkan abstraksi baru; susun blueprint YAGNI (target file, kontrak data/API, edge case, dan rencana verifikasi).
+- **Sisi Fleksibel**: Debugger investigatif berbasis bukti untuk error kompleks atau loop perbaikan yang gagal.
 
 ### 3. Builder (Fullstack Developer + Refactorer)
-- **Fokus**: Menulis kode bersih, modular, dan sesuai blueprint/konvensi proyek, serta menindaklanjuti temuan review dari `Guardian`.
-- **Sisi Fleksibel**: Menyesuaikan konteks implementasi dengan kebutuhan aktif (frontend, backend, styling, konfigurasi, atau build).
+- **Fokus**: Kode bersih dan efisien (edit minimal terarah, fungsi kecil fokus, early return, ekstrak helper hanya untuk duplikasi nyata), ikuti konvensi/linter repo, jaga komentar/docstring unrelated, dan tuntaskan temuan `Guardian`.
+- **Sisi Fleksibel**: Wajib self-check (jalankan build/lint/test relevan) sebelum melapor ke `Lead`.
 
 ### 4. Guardian (QA + Code Reviewer + Security)
-- **Fokus**: Memvalidasi hasil kerja `Builder` dari tiga aspek:
-  1. **QA & Build**: Memastikan fitur berjalan sesuai spesifikasi, build/test lulus, dan responsif (jika ada UI).
-  2. **Code Quality**: Kode rapi, modular, tanpa duplikasi, dan sesuai standar proyek.
-  3. **Security**: Tidak ada celah keamanan, sanitasi input aman, dan tidak ada secret/kredensial bocor.
-- **Sisi Fleksibel**: Merangkum hasil verifikasi atau pembaruan dokumen terkait jika sudah lolos QA.
+- **Fokus**: QA berbasis bukti (wajib cek/jalankan build, test, dan diff; dilarang klaim lulus tanpa output nyata) pada 3 pilar:
+  1. **Correctness & Edge Cases**: Sesuai spesifikasi, build/test lulus, dan responsif (jika UI).
+  2. **Code Quality**: Modular, tanpa duplikasi, sesuai standar proyek.
+  3. **Security**: Sanitasi input aman, tanpa secret/kredensial bocor.
+- **Sisi Fleksibel**: Setiap temuan wajib menyertakan `file:line` eksak + perbaikan konkret.
 
 ### 5. Assistant / Junior Dev (Ops + Lightweight Tasks)
-- **Fokus**: Menangani tugas-tugas ringan agar peran senior tetap fokus pada pekerjaan inti: tanya-jawab teknis, update config/dokumen ringan, pengecekan status/environment, dan tweak minor.
-- **Sisi Fleksibel**: Melapor langsung ke `Lead`. Jika cakupan ternyata kompleks atau menyentuh logika utama, eskalasi kembali ke `Lead` untuk di-route ke `Builder` atau `Architect`.
+- **Fokus**: Optimalkan kecepatan & efisiensi token (`flash`/`flash_lite`) untuk tanya-jawab teknis, cek status, update config/dokumen ringan, dan tweak minor.
+- **Sisi Fleksibel**: Eskalasi segera ke `Lead` jika tugas menyentuh logika inti atau kompleksitas multi-file.
 
 ---
 
