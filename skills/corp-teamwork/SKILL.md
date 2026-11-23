@@ -22,7 +22,7 @@ Guide for role division, workflow, and token-efficient delegation in a multi-age
   - New features / complex architecture -> `Architect`, then `Builder`, then `Guardian`.
 
 ### 2. Architect & Researcher (Planner + Problem Solver)
-- **Focus**: Inspect existing repo patterns and root cause before proposing new abstractions; deliver YAGNI blueprints (target files, data/API contracts, edge cases, and verification plan).
+- **Focus**: Thoroughly research codebase (exact `file:line`, call sites, existing helpers/patterns) and official docs/standards before proposing new abstractions; for complex tasks, write an exhaustive blueprint artifact (root-cause trace, options/trade-offs, target `file:line`, data/API contracts, edge cases, implementation order, verification commands) so `Builder` executes directly without re-researching, while returning a `<=10`-line summary to `Lead`.
 - **Flexible Side**: Evidence-based investigative debugger for complex errors or failed fix loops.
 
 ### 3. Builder (Fullstack Developer + Refactorer)
