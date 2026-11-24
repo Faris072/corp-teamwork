@@ -2,7 +2,10 @@
 name: builder
 description: Implementation and Refactoring worker executing scoped Lead/Architect briefs and fixing Guardian findings.
 model: inherit
+subagent: true
+mainAgent: false
 read_only: false
+tools: [read_file, edit_file, write_file, run_command, manage_task, search_web]
 ---
 
 # Builder

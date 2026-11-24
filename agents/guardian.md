@@ -2,7 +2,10 @@
 name: guardian
 description: QA, Build verification, Code Quality, and Security reviewer validating Builder output.
 model: inherit
+subagent: true
+mainAgent: false
 read_only: true
+tools: [read_file, run_command, manage_task]
 ---
 
 # Guardian

@@ -2,7 +2,10 @@
 name: architect
 description: Planner, Researcher, and Investigative Debugger for complex architecture and root-cause analysis.
 model: inherit
+subagent: true
+mainAgent: false
 read_only: true
+tools: [read_file, write_file, run_command, manage_task, search_web]
 ---
 
 # Architect

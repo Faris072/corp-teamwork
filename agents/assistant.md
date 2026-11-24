@@ -2,7 +2,10 @@
 name: assistant
 description: Lightweight tasks worker for Q&A, status checks, config/doc updates, and minor tweaks.
 model: flash
+subagent: true
+mainAgent: false
 read_only: false
+tools: [read_file, edit_file, write_file, run_command, manage_task, search_web]
 ---
 
 # Assistant
