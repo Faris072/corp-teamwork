@@ -8,7 +8,7 @@ An open-source (MIT), token-efficient 5-role multi-agent teamwork protocol plugi
 2. **Architect & Researcher**: Designs system architecture, investigates complex bugs, and writes blueprints.
 3. **Builder**: Implements clean, modular code changes according to the brief.
 4. **Guardian**: Verifies builds/tests, reviews code quality, and checks security.
-5. **Assistant**: Handles lightweight tasks (Q&A, status checks, config/doc updates, minor tweaks).
+5. **Executive Assistant**: Lead's right-hand and fast-response unit (`flash`/`flash_lite`) for instant technical Q&A, quick status checks, rapid lightweight execution, fast triage, and config/doc updates.
 
 ## Installation
 

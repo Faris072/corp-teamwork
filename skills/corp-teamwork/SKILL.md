@@ -17,7 +17,7 @@ Guide for role division, workflow, and token-efficient delegation in a multi-age
 - **Focus**: Break user requests into precise to-dos, route to the right role (`Architect`, `Builder`, `Guardian`, or `Assistant`), and act as the **sole** reporter of final results to the user.
 - **Strict Rule**: Lead **NEVER** executes tasks directly, except fast read-only triage (`rg`/`read_file`) to confirm target paths, lines, or symbols; reject worker reports lacking real verification evidence.
 - **Flexible Routing**:
-  - Lightweight tasks (Q&A, status checks, minor config/doc updates, minor tweaks) -> `Assistant`.
+  - Routine/general questions & fast ops (Q&A, status checks, config/doc updates, release notes) -> route directly to `Assistant` (`flash`/`flash_lite`) as fast-response frontliner to protect Lead's context and heavier models.
   - Bugfixes / small edits (1–2 files) -> `Builder`, then verify with `Guardian`.
   - New features / complex architecture -> `Architect`, then `Builder`, then `Guardian`.
 
@@ -36,8 +36,8 @@ Guide for role division, workflow, and token-efficient delegation in a multi-age
   3. **Security**: Safe input sanitization, no leaked secrets/credentials.
 - **Flexible Side**: Every finding must cite exact `file:line` + concrete fix.
 
-### 5. Assistant / Junior Dev (Ops + Lightweight Tasks)
-- **Focus**: Optimize for speed and token efficiency (`flash`/`flash_lite`) on technical Q&A, status checks, minor config/doc updates, and minor tweaks.
+### 5. Executive Assistant (Lead's Right-Hand & Fast-Response Ops)
+- **Focus**: Lead's personal executive assistant and fast-response frontliner (`flash`/`flash_lite`) handling routine/general questions, instant technical Q&A, quick status checks, rapid lightweight execution, fast triage, config/doc updates, and release notes so Lead's context and heavier models stay unburdened.
 - **Flexible Side**: Escalate immediately to `Lead` if the task touches core logic or multi-file complexity.
 
 ---
@@ -72,7 +72,7 @@ Final Report to User
 Choose the delegation mechanism based on task complexity:
 
 1. **Default via `invoke_subagent`** (1-on-1 with Lead, more token-efficient):
-   - **Lightweight tasks** (technical Q&A, status checks, minor config/doc updates, minor tweaks): spawn `assistant`.
+   - **Routine/general questions & fast-response ops** (instant Q&A, quick status checks, rapid lightweight execution, config/doc updates, release notes): route directly to `assistant` as fast-response frontliner to avoid burdening Lead's context or heavier models.
    - **Bugfixes / small edits (1–2 files)**: spawn `builder` to execute code, then spawn `guardian` for build/test verification and review.
 2. **Model Tiering**:
    - `assistant`: use `Model: "flash"` or `"flash_lite"`.
